@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Build C version
+      run: |
+        make
+        ls -la mini-kdb
+
+    - name: Test Python version
+      run: |
+        echo -e "hello\nhello Grok\nhelp\nquit" | python3 mini_kdb.py
+
+    - name: Test C version
+      run: |
+        echo -e "hello\nhello CI\nhelp\nquit" | ./mini-kdb
