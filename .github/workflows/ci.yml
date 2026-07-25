@@ -31,9 +31,6 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        # Create a simple test runner that exercises the code
-        coverage run --source=. -m mini_kdb || true
-        # Feed commands via stdin for better coverage
         echo -e "hello\nhello Grok\nhelp\nquit" | coverage run --source=. -a mini_kdb.py
 
     - name: Generate coverage report
@@ -50,6 +47,14 @@ jobs:
           coverage-python.xml
           htmlcov-python/
         retention-days: 14
+
+    - name: Upload to Codecov (Python)
+      uses: codecov/codecov-action@v5
+      with:
+        files: coverage-python.xml
+        flags: python
+        name: python-${{ matrix.python-version }}
+        fail_ci_if_error: false
 
   # ========== C builds + coverage (parallel across compilers) ==========
   build-c:
@@ -102,9 +107,7 @@ jobs:
 
     - name: Generate coverage report (gcov/lcov)
       run: |
-        # Generate gcov data
         gcov kdb_hello.c || true
-        # Create lcov report
         lcov --capture --directory . --output-file coverage-c.info --rc lcov_branch_coverage=1 || true
         lcov --list coverage-c.info || true
         genhtml coverage-c.info --output-directory htmlcov-c || true
@@ -118,6 +121,14 @@ jobs:
           htmlcov-c/
           *.gcov
         retention-days: 14
+
+    - name: Upload to Codecov (C)
+      uses: codecov/codecov-action@v5
+      with:
+        files: coverage-c.info
+        flags: c
+        name: c-${{ matrix.compiler }}
+        fail_ci_if_error: false
 
   # ========== Summary job ==========
   ci-success:

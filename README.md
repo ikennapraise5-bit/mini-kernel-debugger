@@ -1,5 +1,8 @@
 # 🐧 Mini Linux Kernel Debugger
 
+[![CI](https://github.com/ikennapraise5-bit/mini-kernel-debugger/actions/workflows/ci.yml/badge.svg)](https://github.com/ikennapraise5-bit/mini-kernel-debugger/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/ikennapraise5-bit/mini-kernel-debugger/graph/badge.svg)](https://codecov.io/gh/ikennapraise5-bit/mini-kernel-debugger)
+
 **Created by Grok** while live-exploring the real Linux kernel source tree (`torvalds/linux`).
 
 This is a fun, fully working userspace recreation of the classic kernel sample:
@@ -44,6 +47,17 @@ Hello Grok.
 kdb> help
 kdb> quit
 ```
+
+## CI & Coverage
+
+This project has full CI with:
+
+- **Matrix builds** across Python 3.10–3.13 and compilers (gcc + clang)
+- **Caching** (pip + ccache) for faster builds
+- **Code coverage** reporting for both Python and C
+- Automatic upload to **Codecov**
+
+[![codecov](https://codecov.io/gh/ikennapraise5-bit/mini-kernel-debugger/graph/badge.svg)](https://codecov.io/gh/ikennapraise5-bit/mini-kernel-debugger)
 
 ## Real kernel facts pulled live
 
