@@ -18,11 +18,28 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
+        cache: 'pip'   # Cache pip dependencies
 
-    - name: Build C version
+    - name: Cache ccache
+      uses: actions/cache@v4
+      with:
+        path: ~/.ccache
+        key: ${{ runner.os }}-ccache-${{ hashFiles('**/kdb_hello.c', '**/Makefile') }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-
+
+    - name: Install ccache
       run: |
+        sudo apt-get update
+        sudo apt-get install -y ccache
+        echo "/usr/lib/ccache" >> $GITHUB_PATH
+
+    - name: Build C version (with ccache)
+      run: |
+        export CC="ccache gcc"
         make
         ls -la mini-kdb
+        ccache -s   # Show cache stats
 
     - name: Test Python version
       run: |
